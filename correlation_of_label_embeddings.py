@@ -31,13 +31,26 @@ import pandas as pd
 df = pd.read_csv('lists/anet1.3_labels.csv')
 print(df.info())
 
-# calculate the correlation matrix of the label embeddings
-corr_matrix = torch.matmul(label_embeddings, label_embeddings.T)
+# calculate the correlation of each row vector in the label embeddings
+# with each other row vector in the label embeddings
+corr_matrix = np.corrcoef(label_embeddings)
 print('corr_matrix.shape:', corr_matrix.shape)
 
-# plot the correlation matrix
+# plot the correlation matrix, set colorbar to 'hot' for better visualization
 import matplotlib.pyplot as plt
-plt.imshow(corr_matrix)
+# plt.imshow(corr_matrix, cmap='hot', vmin=0.6, vmax=1)
+plt.imshow(corr_matrix, vmin=0.6, vmax=1)
+plt.xticks(np.arange(0, 210, 10), np.arange(0, 210, 10), rotation=90)
+plt.yticks(np.arange(0, 210, 10), np.arange(0, 210, 10))
+plt.tight_layout()
 plt.colorbar()
 plt.show()
 
+
+# plot the correlation labels from 80 to 130
+plt.imshow(corr_matrix[80:131, 80:131], vmin=0.6, vmax=1)
+plt.xticks(np.arange(0, 51, 5), np.arange(80, 131, 5), rotation=90)
+plt.yticks(np.arange(0, 51, 5), np.arange(80, 131, 5))
+plt.tight_layout()
+plt.colorbar()
+plt.show()

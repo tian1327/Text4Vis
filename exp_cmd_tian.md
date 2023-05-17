@@ -3,9 +3,8 @@
 
 1. Generate the textual embeddings for ActivityNet-v1.3 200 class labels
    * using the prompt text `a video of a person {CLASS}.`
-   * `sh scripts/run_train_tian.sh  configs/k400/k400_train_rgb_vitl-14-f8.yaml`
-   * 
-   * `sh scripts/run_test_zeroshot_tian.sh  configs/anet/anet_zero_shot.yaml exp/k400/ViT-L/14/f8/last_model.pt`
+   * run `sh scripts/run_test_zeroshot_tian.sh  configs/anet/anet_zero_shot.yaml exp/k400/ViT-L/14/f8/last_model.pt` to get the textual embeddings of the 200 class labels
+   * run `python correlation_of_label_embeddings.py` to plot the correlation of the textual embeddings
 
 
 2. Test the idea of `threshold max of softmax` and `thereshold entropy` using the pretrained model (trained on Kinetics400) for seen vs. unseen classification on Kinetics600 (test set)
