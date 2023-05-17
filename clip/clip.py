@@ -124,6 +124,8 @@ def load(
     """
     if name in _MODELS:
         model_path = _download(_MODELS[name])
+        print(f"Download {name} to {model_path}")
+
     elif os.path.isfile(name):
         model_path = name
     else:
@@ -192,6 +194,8 @@ def load(
         patch_float(model.encode_text)
 
         model.float()
+    
+    print(f"Loaded {name} model")
 
     return model, _transform(model.input_resolution.item())
 
