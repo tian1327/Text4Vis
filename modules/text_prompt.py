@@ -41,7 +41,7 @@ def text_prompt(data):
     num_text_aug = len(text_aug)
 
     for ii, txt in enumerate(text_aug):
-        text_dict[ii] = torch.cat([clip.tokenize(txt.format(c)) for i, c in data.classes])
+        text_dict[ii] = torch.cat([clip.tokenize(txt.format(c)) for i, c in data.classes]) # encode the data.classes names
 
     classes = text_dict[0] 
 

@@ -206,7 +206,7 @@ def main(args):
         sampler=val_sampler, drop_last=False)
 
 
-    classes, _, text_dict = text_prompt(train_data)
+    classes, _, text_dict = text_prompt(train_data) # classes are the tokenized, prompted, text consisting of names of the classes
     n_class = text_dict[0].size(0)
     #### generate classes feature ######
     class_feats_file = 'text_feats_{}_{}.pt'.format(config['data']['dataset'], config['network']['arch']).replace('/','')
@@ -217,8 +217,11 @@ def main(args):
         model.eval()
         with torch.no_grad():
             classes_features = model.encode_text(classes)  # [n_class dim]
-        # if dist.get_rank() == 0:
-        #     torch.save(classes_features.cpu(), class_feats_file)
+        if dist.get_rank() == 0:
+            torch.save(classes_features.cpu(), class_feats_file)
+            print('=> save classes features to {}'.format(class_feats_file))
+    
+    stop
     
     # random init
     # classes_features = torch.empty(n_class, config.network.n_emb)

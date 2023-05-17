@@ -23,6 +23,7 @@ def init_distributed_mode(args):
         args.distributed = False
         return
 
+    print("Using GPU: {} for training".format(args.gpu))
     args.distributed = True
 
     torch.cuda.set_device(args.gpu)
