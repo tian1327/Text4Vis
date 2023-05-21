@@ -3,6 +3,7 @@
 
 1. Generate the textual embeddings for ActivityNet-v1.3 200 class labels
    * using the prompt text `a video of a person {CLASS}.`
+   * using CLIP pretrained model `ViT-L/14`
    * run `sh scripts/run_test_zeroshot_tian.sh  configs/anet/anet_zero_shot.yaml exp/k400/ViT-L/14/f8/last_model.pt` to get the textual embeddings of the 200 class labels
    * run `python correlation_of_label_embeddings.py` to plot the correlation of the textual embeddings
 
