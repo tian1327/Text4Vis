@@ -99,6 +99,7 @@ class Video_dataset(data.Dataset):
                     randint(len(video_list),
                             size=self.total_length - len(video_list))))
                 return np.sort(offsets) + self.index_bias
+                
             offsets = list()
             ticks = [i * len(video_list) // self.num_segments
                     for i in range(self.num_segments + 1)]

@@ -53,9 +53,8 @@ def update_dict(dict):
 
 
 def main(args):
-
-    init_distributed_mode(args)
-    # args.distributed = False
+    # init_distributed_mode(args)
+    args.distributed = False
 
     with open(args.config, 'r') as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
@@ -66,10 +65,9 @@ def main(args):
     if torch.cuda.is_available():
         device = "cuda"
         cudnn.benchmark = True
-    print('=> device: {}'.format(device))
 
     # get fp16 model and weight
-    print('=> loading CLIP model')
+    print('=> loading model')
     model, clip_state_dict = clip.load(
         config.network.arch,
         device='cpu',jit=False,
@@ -79,7 +77,7 @@ def main(args):
         emb_dropout=config.network.emb_dropout,
         pretrain=config.network.init,
         joint_st= config.network.joint_st) # Must set jit=False for training  ViT-B/32
-    print('=> CLIP model loaded')
+    print('=> model loaded')
 
 
     video_head = video_header(
@@ -144,18 +142,18 @@ def main(args):
             cropping,
             Stack(roll=False),
             ToTorchFormatTensor(div=True),
-            GroupNormalize(input_mean, input_std),
+            GroupNormalize(input_mean,input_std),
         ]),
         dense_sample=args.dense,
         test_clips=args.test_clips)
     print('=> data loaded')
 
-    print('=> build data sampler')
-    val_sampler = torch.utils.data.distributed.DistributedSampler(val_data)
-    val_loader = DataLoader(val_data,
-        batch_size=config.data.batch_size, num_workers=config.data.workers,
-        sampler=val_sampler, pin_memory=True, drop_last=False)
-    print('=> built val_loader')
+    # print('=> build data sampler')
+    # val_sampler = torch.utils.data.distributed.DistributedSampler(val_data)
+    # val_loader = DataLoader(val_data,
+    #     batch_size=config.data.batch_size,num_workers=config.data.workers,
+    #     sampler=val_sampler, pin_memory=True, drop_last=False)
+    # print('=> built val_loader')
 
     model_full = VideoCLIP(model, video_head, config.data.num_segments)
     print('=> built VideoCLIP model')
@@ -171,6 +169,8 @@ def main(args):
         print('=> loaded model from {}'.format(args.weights))
     else:
         print('=> no checkpoint found at {}'.format(args.weights))
+        
+
 
     if args.distributed:
         model_full = DistributedDataParallel(model_full.cuda(), device_ids=[args.gpu], find_unused_parameters=True)
@@ -200,12 +200,10 @@ def main(args):
 
 
     print('=> start testing')
-    prec1, prec5 = validate(
+    prec1 = validate(
         val_loader, device, 
         model_full, config, classes_features, args.test_crops, args.test_clips)
-
     print('Test: Prec@1 {:.3f}'.format(prec1))
-    print('Test: Prec@5 {:.3f}'.format(prec5))
     
     return
 
@@ -285,7 +283,7 @@ def validate(val_loader, device, model, config, text_features, test_crops, test_
         print('Top1: mean {:.03f}%, std {:.03f}%'.format(accuracy_split, accuracy_split_std))
         print('Top5: mean {:.03f}%, std {:.03f}%'.format(accuracy_split_top5, accuracy_split_top5_std))
 
-    return top1.avg, top5.avg
+    return top1.avg
 
 # utils
 @torch.no_grad()
@@ -307,9 +305,7 @@ def compute_accuracy(vis_emb, text_emb, label):
     similarity=(100.0 * vis_emb @ text_emb.T)
     similarity=similarity.view(n_samples, -1, n_class).softmax(dim = -1)
     similarity=similarity.mean(dim = 1, keepdim = False)  # b 101
-
     prec=accuracy(similarity, label, topk = (1, 5))
-    
     return prec[0], prec[1]
  
  

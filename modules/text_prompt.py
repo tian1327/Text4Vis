@@ -45,4 +45,7 @@ def text_prompt(data):
 
     classes = text_dict[0] 
 
+    print('text_dict:', text_dict)
+    print('classes:', classes)
+
     return classes, num_text_aug, text_dict
