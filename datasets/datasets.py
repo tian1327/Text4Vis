@@ -126,6 +126,9 @@ class Video_dataset(data.Dataset):
 
 
     def _get_test_indices(self, video_list):
+        #print('video_list', video_list)
+        #print('len(video_list)', len(video_list))
+
         if self.dense_sample:
             # multi-clip for dense sampling
             num_clips = self.test_clips

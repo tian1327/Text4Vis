@@ -10,7 +10,9 @@
 
 
 2. Run k-way classification to get the zero-shot performance on the sampled ActivityNet dataset
-   * `sh scripts/run_test_zeroshot_tian.sh configs/anet/anet_zero_shot.yaml ckpt/k400-vitl-14-f8.pt`
+   * `bash scripts/run_test_zeroshot_tian.sh configs/anet/anet_zero_shot.yaml ckpt/k400-vitl-14-f8.pt`
+   * modify `configs/anet/anet_zero_shot.yaml` to change the `val_root` and `val_list`, do this for sampled training and validation
+   * 
    
 3. Test the idea of `threshold max of softmax` and `thereshold entropy` for seen vs. unseen
    * using the pretrained model (trained on Kinetics400) for seen vs. unseen classification on sampled ActivityNet dataset
