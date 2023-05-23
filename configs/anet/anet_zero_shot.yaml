@@ -9,14 +9,16 @@ data:
     num_classes: 200
     image_tmpl: 'img_{:05d}.jpg'
     # val_root: /bpfs/v2_mnt/VIS/wuwenhao/anet
-    #val_root: ../data/ActivityNet_200_sampled/training_resize256x340_fps1
-    val_root: ../data/ActivityNet_200_sampled/validation_resize256x340_fps1
+    val_root: ../data/ActivityNet_200_sampled/training_resize256x340_fps1
+    #val_root: ../data/ActivityNet_200_sampled/validation_resize256x340_fps1
 
-    # val_list: 'lists/anet/anet_full_for_zeroshot.txt' # frame_path, num_frames, label
-    # val_list: 'lists/anet/anet_sampled_training_zeroshot.txt' # frame_path, num_frames, label
-    val_list: 'lists/anet/anet_sampled_validation_zeroshot.txt' # frame_path, num_frames, label
+    #val_list: 'lists/anet/anet_full_for_zeroshot.txt' # frame_path, num_frames, label
+    val_list: 'lists/anet/anet_sampled_training_zeroshot.txt' # frame_path, num_frames, label
+    #val_list: 'lists/anet/anet_sampled_validation_zeroshot.txt' # frame_path, num_frames, label
 
-    label_list: 'lists/anet1.3_labels.csv' # label_id, label_name
+    #label_list: 'lists/anet1.3_labels.csv' # label_id, label_name
+    label_list: 'lists/anet1.3_labels_150class.csv' # label_id, label_name
+    
     index_bias: 1
     input_size: 224
 network:

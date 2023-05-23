@@ -331,6 +331,10 @@ def compute_full_similarity(vis_emb, text_emb, label):
     # save similarity matrix
     np.save('output/similarity.npy', similarity.cpu().numpy())
     print('---> similarity saved to output/similarity.npy') 
+
+    # save label
+    np.save('output/label.npy', label.cpu().numpy())
+    print('---> label saved to output/label.npy')
  
 def multi_split_test(vis_embs, text_embs, true_label):
     # vis_embs: [10000, 768]
