@@ -74,7 +74,6 @@ Putting_on_shoes/d7gY7YJ3Fdc 13 135
 Putting_on_shoes/DfFqlrv7F2g 80 135
 Putting_on_shoes/gjz9pSK0Y9I 126 135
 Bungee_jumping/F9Wv_Lxe_QM 45 20
-Bungee_jumping/3OXh6OV2Zrc 0 20
 Bungee_jumping/ot-Y1sa-ujc 138 20
 Kayaking/Yc9pZ8Vy-3s 220 80
 Kayaking/AZn294ubbps 106 80
