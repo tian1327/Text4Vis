@@ -277,6 +277,12 @@ def validate(val_loader, device, model, config, text_features, test_crops, test_
             sim = torch.cat((sim, sim_logits[i]), 0)
             la = torch.cat((la, labels[i]), 0)
             vid_feat = torch.cat((vid_feat, i_features[i]), 0)
+        
+        print('vid_feat.shape: {}'.format(vid_feat.shape))
+        print('text_features.shape: {}'.format(text_features.shape))
+        print('la.shape: {}'.format(la.shape))
+        print('sim.shape: {}'.format(sim.shape))
+        compute_full_similarity(vid_feat.cpu(), text_features.cpu(), la.cpu())
 
         acc_split, acc_split_top5 = multi_split_test(vid_feat.cpu(), text_features.cpu(), la.cpu())
         accuracy_split, accuracy_split_std = np.mean(acc_split), np.std(acc_split)
@@ -309,9 +315,21 @@ def compute_accuracy(vis_emb, text_emb, label):
     similarity=similarity.mean(dim = 1, keepdim = False)  # b 101
 
     prec=accuracy(similarity, label, topk = (1, 5))
-    
+
     return prec[0], prec[1]
  
+def compute_full_similarity(vis_emb, text_emb, label):
+
+    n_class = len(text_emb)
+    n_samples = len(vis_emb)
+    similarity=(100.0 * vis_emb @ text_emb.T)
+    similarity=similarity.view(n_samples, -1, n_class).softmax(dim = -1)
+    similarity=similarity.mean(dim = 1, keepdim = False)  # b 101
+
+    print('+++++similarity.shape: {}'.format(similarity.shape))
+    # save similarity matrix
+    np.save('output/similarity.npy', similarity.cpu().numpy())
+    print('---> similarity saved to output/similarity.npy') 
  
 def multi_split_test(vis_embs, text_embs, true_label):
     # vis_embs: [10000, 768]
