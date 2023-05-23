@@ -182,7 +182,8 @@ def main(args):
     #### generate classes feature ######
     print('=> generate classes features')
     class_feats_file = 'text_feats_{}_{}.pt'.format(config['data']['dataset'], config['network']['arch']).replace('/','')
-    if os.path.isfile(class_feats_file):
+    reload = False
+    if reload and os.path.isfile(class_feats_file):
         print('=> load classes features from {}'.format(class_feats_file))
         classes_features = torch.load(class_feats_file)
     else:
